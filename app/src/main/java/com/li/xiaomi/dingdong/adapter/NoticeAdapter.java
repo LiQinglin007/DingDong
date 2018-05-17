@@ -1,0 +1,29 @@
+package com.li.xiaomi.dingdong.adapter;
+
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+
+import com.li.xiaomi.dingdong.R;
+import com.li.xiaomi.xiaomilibrary.bean.NoticeBean;
+import com.li.xiaomi.xiaomilibrary.utils.DateUtils;
+
+
+/**
+ * 作者：dell or Xiaomi Li
+ * 时间： 2018/5/16
+ * 内容：打卡记录
+ * 最后修改：
+ */
+public class NoticeAdapter extends BaseQuickAdapter<NoticeBean, BaseViewHolder> {
+
+    public NoticeAdapter(int layoutResId) {
+        super(layoutResId);
+    }
+
+    @Override
+    protected void convert(BaseViewHolder helper, NoticeBean item) {
+        helper.setText(R.id.item_notice_time, DateUtils.LongToStr(item.getNoticeTitle(), "yyyy-MM-dd HH:mm"));
+        helper.setText(R.id.item_notice_content, item.getNoticeContent());
+    }
+}

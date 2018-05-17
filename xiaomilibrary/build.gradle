@@ -1,0 +1,89 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true// 是否混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+greendao {
+    schemaVersion 1   //数据库版本号
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+
+    //Android Support包
+    api "com.android.support:support-v4:$android_version"
+    api "com.android.support:appcompat-v7:$android_version"
+    api "com.android.support:design:$android_version"
+    api "com.android.support:cardview-v7:$android_version"
+
+    //分包
+    api 'com.android.support:multidex:1.0.1'
+    api 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //网络请求依赖
+    api 'com.squareup.okio:okio:1.13.0'
+    api 'com.squareup.okhttp3:okhttp:3.8.1'
+    api 'com.squareup.retrofit2:retrofit:2.3.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.3.0'
+
+    //一个Loading的开源库
+    api 'com.wang.avi:library:2.1.3'
+
+    //glide
+    api 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+
+    //数据库
+    api 'org.greenrobot:greendao:3.2.0'
+
+    // add library
+    api 'org.greenrobot:greendao-generator:3.2.0'
+
+    //json解析
+    api 'com.google.code.gson:gson:2.8.2'
+
+    //时间总线
+    api 'org.greenrobot:eventbus:3.0.0'
+
+    //权限
+    api 'pub.devrel:easypermissions:1.2.0'
+
+    //banner  git:https://github.com/saiwu-bigkoo/Android-ConvenientBanner
+    api 'com.bigkoo:convenientbanner:2.0.5'
+
+    //状态栏  https://github.com/gyf-dev/ImmersionBar
+    api 'com.gyf.barlibrary:barlibrary:2.3.0'
+
+    //RecyclerView依赖
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
+
+    //RecyclerView 分割线  https://github.com/ChoicesWang/RecyclerView_Divider
+    api 'com.choices.divider:RecyclerView_Divider:1.0.0'
+
+    //LuBan压缩
+    api 'top.zibin:Luban:1.1.3'
+
+    //    https://github.com/venshine/WheelView
+        api 'com.wx.wheelview:wheelview:1.3.3'
+
+    api 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'
+    api 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+}

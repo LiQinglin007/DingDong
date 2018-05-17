@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/item_item_bottom_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_80"
+        android:gravity="center"
+        android:textColor="@color/color_333"
+        android:textSize="@dimen/px_28"
+        tools:text="名称"/>
+
+    <include layout="@layout/include_line"></include>
+
+</LinearLayout>

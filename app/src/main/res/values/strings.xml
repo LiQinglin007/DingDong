@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">钉咚</string>
+    <string name="shared_preferences_name">MiDingDing</string>
+    <string name="db_name">MiDingDing.db</string>
+</resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/setting_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/default_color"
+        app:title="设置"
+        app:titleTextColor="@color/color_white">
+
+    </android.support.v7.widget.Toolbar>
+
+    <!--上班时间-->
+    <LinearLayout
+        android:id="@+id/choose_worktime_ly"
+        style="@style/Setting_Ly_Top"
+        android:layout_below="@+id/setting_toolbar">
+
+        <TextView
+            style="@style/Setting_Tv_Left"
+            android:text="上班时间" />
+
+        <TextView
+            android:id="@+id/choose_worktime"
+            style="@style/Setting_Tv_Right"
+            android:text="8:30" />
+    </LinearLayout>
+    <!--到单位时间-->
+    <LinearLayout
+        android:id="@+id/choose_startup_time_ly"
+        style="@style/Setting_Ly"
+        android:layout_below="@+id/choose_worktime_ly">
+
+        <TextView
+            style="@style/Setting_Tv_Left"
+            android:text="一般到单位时间" />
+
+        <TextView
+            android:id="@+id/choose_startup_time"
+            style="@style/Setting_Tv_Right"
+            android:text="8:25" />
+
+    </LinearLayout>
+    <!--最晚提醒时间-->
+    <LinearLayout
+        android:id="@+id/choose_remind_time_ly"
+        style="@style/Setting_Ly"
+        android:layout_below="@+id/choose_startup_time_ly">
+
+        <TextView
+            style="@style/Setting_Tv_Left"
+            android:text="最晚提醒时间" />
+
+
+        <TextView
+            android:id="@+id/choose_remind_time"
+            style="@style/Setting_Tv_Right"
+            android:text="上班前5分钟" />
+
+    </LinearLayout>
+    <!--休息类型-->
+    <LinearLayout
+        style="@style/Setting_Ly"
+        android:layout_below="@+id/choose_remind_time_ly">
+
+        <Switch
+            android:id="@+id/setting_switch"
+            style="@style/Setting_sw_Left"
+            android:text="单休 ？" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/setting_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_80"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/px_50"
+        android:layout_marginLeft="@dimen/px_100"
+        android:layout_marginRight="@dimen/px_100"
+        android:background="@drawable/back_default"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/px_30" />
+
+
+</RelativeLayout>
