@@ -28,7 +28,6 @@ import com.li.xiaomi.xiaomilibrary.utils.timer.ITimerListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 
 /**
@@ -40,9 +39,6 @@ import java.util.Timer;
 public class ClockActivity extends BaseActivity implements ITimerListener {
 
     TextView mTextView;
-
-    ArrayList<AppDataBean> mAppDataBeans = new ArrayList<>();
-    ArrayList<String> mAppPackageName = new ArrayList<>();
     String DingDingPackageName = "com.alibaba.android.rimet";
     Timer mTimer;
     boolean Result = false;//打卡成功了么
@@ -59,7 +55,6 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
     @Override
     protected void initData() {
         timeId = getIntent().getLongExtra("timeId", -1);
-        scanLocalInstallAppList(ClockActivity.this.getPackageManager());
     }
 
     @Override
@@ -111,8 +106,6 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
                     //如果有网络
                     doSomething();
                 } else {//如果没有网络，并且距离上班还有五分钟,去发一个通知
-                    LogUtils.Loge(ClockActivity.class.getSimpleName(), "workTime:" + workTime);
-                    LogUtils.Loge(ClockActivity.class.getSimpleName(), "startUpTime:" + startUpTime);
                     Long aLong = PreferenceUtils.getLong(FinalData.TIME_MINE, 300000);
                     if (workTime - startUpTime < aLong) {
                         showNotifictionIcon("将到上班时间,打卡失败,请开启网络手动打卡" + mInt);
@@ -127,10 +120,27 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
     }
 
     /**
+     * 检查包是否存在
+     *
+     * @param packname
+     * @return
+     */
+    private boolean checkPackInfo(String packname) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(packname, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packageInfo != null;
+    }
+
+
+    /**
      * 去跳转到钉钉
      */
     private void doSomething() {
-        if (mAppPackageName.contains(DingDingPackageName)) {
+        if (checkPackInfo(DingDingPackageName)) {
             PackageManager packageManager = ClockActivity.this.getPackageManager();  // 当前Activity获得packageManager对象
             try {
                 Intent intent = new Intent();
@@ -179,37 +189,6 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
         manager.notify(0, builder.build());
     }
 
-    /**
-     * 获取应用列表
-     *
-     * @param packageManager
-     */
-    public void scanLocalInstallAppList(PackageManager packageManager) {
-        mAppDataBeans.clear();
-        mAppPackageName.clear();
-        try {
-            List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
-            int size = packageInfos.size();
-            for (int i = 0; i < size; i++) {
-                PackageInfo packageInfo = packageInfos.get(i);
-                //过滤掉系统app
-                if ((ApplicationInfo.FLAG_SYSTEM & packageInfo.applicationInfo.flags) != 0) {
-                    continue;
-                }
-                AppDataBean myAppInfo = new AppDataBean();
-                myAppInfo.setPackageName(packageInfo.packageName);
-                if (packageInfo.applicationInfo.loadIcon(packageManager) == null) {
-                    continue;
-                }
-                myAppInfo.setAppIcon(packageInfo.applicationInfo.loadIcon(packageManager));
-                myAppInfo.setAppName(packageInfo.applicationInfo.loadLabel(getPackageManager()).toString());//应用名称
-                mAppDataBeans.add(myAppInfo);
-                mAppPackageName.add(packageInfo.packageName);
-            }
-        } catch (Exception e) {
-            Log.e(ClockActivity.class.getSimpleName(), "===============获取应用包信息失败" + e.toString());
-        }
-    }
 
     /**
      * 关闭计时器

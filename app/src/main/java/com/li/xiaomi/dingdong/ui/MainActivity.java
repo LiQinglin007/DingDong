@@ -91,6 +91,9 @@ public class MainActivity extends BaseActivity implements ITimerListener {
                     case R.id.menu_main_setting:
                         startActivity(new Intent(MainActivity.this, SettingActivity.class));
                         break;
+                    case R.id.menu_main_test:
+                        startActivity(new Intent(MainActivity.this, ClockActivity.class));
+                        break;
                 }
                 return true;
             }
