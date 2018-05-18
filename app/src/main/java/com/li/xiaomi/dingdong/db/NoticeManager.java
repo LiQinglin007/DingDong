@@ -4,6 +4,7 @@ import com.li.xiaomi.xiaomilibrary.bean.NoticeBean;
 import com.li.xiaomi.xiaomilibrary.bean.NoticeBeanDao;
 import com.li.xiaomi.xiaomilibrary.utils.greendaoUtils.DBManager;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,6 +25,28 @@ public class NoticeManager {
             mList.addAll(noticeBeans);
         }
         return mList;
+    }
+
+    /**
+     * 删除现在以后的数据，重新设置闹钟
+     */
+    public static void delete() {
+        long timeInMillis = new Date().getTime();
+        NoticeBeanDao noticeBeanDao = DBManager.getInstance().getDaoSession().getNoticeBeanDao();
+//        1. > : gt
+//        2. < : lt
+//        3. >= : ge
+//        4. <= : le
+        List<NoticeBean> noticeBeans = noticeBeanDao.
+                queryBuilder().
+                where(NoticeBeanDao.Properties.NoticeTitle.gt(timeInMillis)).//现在以后的
+                list();
+
+        if (noticeBeans != null && noticeBeans.size() != 0) {
+            for (NoticeBean noticeBean : noticeBeans) {
+                noticeBeanDao.delete(noticeBean);
+            }
+        }
     }
 
     /**
