@@ -1,33 +1,37 @@
 package com.li.xiaomi.dingdong.ui;
 
+import android.app.KeyguardManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.li.xiaomi.dingdong.R;
-import com.li.xiaomi.dingdong.bean.AppDataBean;
 import com.li.xiaomi.dingdong.db.NoticeManager;
 import com.li.xiaomi.dingdong.utils.FinalData;
 
 import com.li.xiaomi.xiaomilibrary.base.BaseActivity;
 import com.li.xiaomi.xiaomilibrary.base.BasePresenter;
 import com.li.xiaomi.xiaomilibrary.bean.NoticeBean;
-import com.li.xiaomi.xiaomilibrary.utils.LogUtils;
 import com.li.xiaomi.xiaomilibrary.utils.NetWorkUtils;
 import com.li.xiaomi.xiaomilibrary.utils.PreferenceUtils;
 import com.li.xiaomi.xiaomilibrary.utils.timer.BaseTimerTask;
 import com.li.xiaomi.xiaomilibrary.utils.timer.ITimerListener;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 
 /**
@@ -37,6 +41,15 @@ import java.util.Timer;
  * 最后修改：
  */
 public class ClockActivity extends BaseActivity implements ITimerListener {
+    // 键盘管理器
+    KeyguardManager mKeyguardManager;
+    // 键盘锁
+    private KeyguardManager.KeyguardLock mKeyguardLock;
+    // 电源管理器
+    private PowerManager mPowerManager;
+    // 唤醒锁
+    private PowerManager.WakeLock mWakeLock;
+
 
     TextView mTextView;
     String DingDingPackageName = "com.alibaba.android.rimet";
@@ -55,10 +68,23 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
     @Override
     protected void initData() {
         timeId = getIntent().getLongExtra("timeId", -1);
+        mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
     }
+
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        // 点亮亮屏
+        mWakeLock = mPowerManager.newWakeLock
+                (PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "Tag");
+        mWakeLock.acquire();
+        // 初始化键盘锁
+        mKeyguardLock = mKeyguardManager.newKeyguardLock("");
+        // 键盘解锁
+        mKeyguardLock.disableKeyguard();
+
+
         mTextView = findViewById(R.id.result_tv);
         if (NetWorkUtils.isNetworkConnected(ClockActivity.this)) {
             //如果有网络
@@ -200,9 +226,22 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         closeTimer();
+        //一定要释放唤醒锁和恢复键盘
+        if (mWakeLock != null) {
+            System.out.println("----> 终止服务,释放唤醒锁");
+            mWakeLock.release();
+            mWakeLock = null;
+        }
+        if (mKeyguardLock != null) {
+            System.out.println("----> 终止服务,重新锁键盘");
+            mKeyguardLock.reenableKeyguard();
+        }
     }
+
+
 }
