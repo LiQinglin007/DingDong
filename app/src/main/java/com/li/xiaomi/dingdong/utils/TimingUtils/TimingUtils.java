@@ -9,8 +9,9 @@ import android.icu.util.Calendar;
 import android.icu.util.TimeZone;
 import android.os.Build;
 
+import com.li.xiaomi.dingdong.db.NoticeBean;
 import com.li.xiaomi.dingdong.db.NoticeManager;
-import com.li.xiaomi.xiaomilibrary.bean.NoticeBean;
+import com.li.xiaomi.xiaomilibrary.utils.LogUtils;
 import com.li.xiaomi.xiaomilibrary.utils.T;
 
 import static android.icu.util.Calendar.getInstance;
@@ -21,6 +22,7 @@ import static android.icu.util.Calendar.getInstance;
  */
 
 public class TimingUtils {
+    private final static String Tag = TimingUtils.class.getSimpleName();
 
     @TargetApi(Build.VERSION_CODES.N)
     public static void setAlarmTime(Context context, Intent intent) {
@@ -28,22 +30,24 @@ public class TimingUtils {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         int clockId = intent.getIntExtra("ClockId", 0);
         int week = intent.getIntExtra("week", 0);
-        int Hour = intent.getIntExtra("hour", 0);
-        int Min = intent.getIntExtra("min", 0);
+        int HourClock = intent.getIntExtra("hourClock", 0);
+        int MinClock = intent.getIntExtra("minClock", 0);
         PendingIntent sender = PendingIntent.getBroadcast(context, clockId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Calendar calendarClock = getInstance();
+        calendarClock.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        calendarClock.set(calendarClock.get(Calendar.YEAR), calendarClock.get(Calendar.MONTH), calendarClock.get
+                (Calendar.DAY_OF_MONTH), HourClock, MinClock, 0);
+        long clockTime = calMethod(week, calendarClock.getTimeInMillis());
 
-        Calendar calendar = getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get
-                (Calendar.DAY_OF_MONTH), Hour, Min, 0);
-        long time = calMethod(week, calendar.getTimeInMillis());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, sender);
-            NoticeBean mNoticeBean = new NoticeBean(null, time, "未启动", false);
+            LogUtils.Loge(Tag, "开启下次定时，时间(API>=19)：" + clockTime);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, clockTime, sender);
+            NoticeBean mNoticeBean = new NoticeBean(null, clockTime, "未启动", false);
             NoticeManager.add(mNoticeBean);
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, time, sender);
-            NoticeBean mNoticeBean = new NoticeBean(null, time, "未启动", false);
+            LogUtils.Loge(Tag, "开启下次定时，时间(API<19)：" + clockTime);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, clockTime, sender);
+            NoticeBean mNoticeBean = new NoticeBean(null, clockTime, "未启动", false);
             NoticeManager.add(mNoticeBean);
         }
     }
@@ -51,51 +55,44 @@ public class TimingUtils {
     /**
      * 周期闹钟
      *
-     * @param mContext //     * @param flag     0：一次性闹钟  1：每周重复一次
-     * @param Hour
-     * @param Min
-     * @param week     周几   1-7（周一到周日）
-     * @param ClockId  闹钟id
-     * @param msg      提示信息
+     * @param mContext  //     * @param flag     0：一次性闹钟  1：每周重复一次
+     * @param HourClock 闹钟时间
+     * @param MinClock
+     * @param week      周几   1-7（周一到周日）
+     * @param ClockId   闹钟id
+     * @param msg       提示信息
      */
 
     @TargetApi(Build.VERSION_CODES.N)
-    public static void setClock(Context mContext, int Hour, int Min, int week, int ClockId, String msg) {
-        long intervalMillis = 0;
-//        if (flag != 0) {
-//            intervalMillis = 24 * 3600 * 1000 * 7;
-//        }
+    public static void setClock(Context mContext, int HourClock, int MinClock, int week, int ClockId, String msg) {
         Calendar calendar = getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get
-                (Calendar.DAY_OF_MONTH), Hour, Min, 0);
-        long time = calMethod(week, calendar.getTimeInMillis());
+                (Calendar.DAY_OF_MONTH), HourClock, MinClock, 0);
+        long timeClock = calMethod(week, calendar.getTimeInMillis());
+
         AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
 
         Intent mIntent = new Intent(mContext, AlarmReceiver.class);
         mIntent.putExtra("ClockId", ClockId);
         mIntent.putExtra("week", week);
-        mIntent.putExtra("hour", Hour);
-        mIntent.putExtra("min", Min);
-        mIntent.putExtra("timeId", time);
+        mIntent.putExtra("hourClock", HourClock);
+        mIntent.putExtra("minClock", MinClock);
+        mIntent.putExtra("timeId", timeClock);
         PendingIntent broadcast = PendingIntent.getBroadcast(mContext, ClockId, mIntent, PendingIntent
                 .FLAG_CANCEL_CURRENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, broadcast);
-            NoticeBean mNoticeBean = new NoticeBean(null, time, "未启动", false);
+            LogUtils.Loge(Tag, "开启定时，时间(API>=19)：" + timeClock);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeClock, broadcast);
+            NoticeBean mNoticeBean = new NoticeBean(null, timeClock, "未启动", false);
             NoticeManager.add(mNoticeBean);
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, time, broadcast);
-            NoticeBean mNoticeBean = new NoticeBean(null, time, "未启动", false);
+            LogUtils.Loge(Tag, "开启定时，时间(API>=19)：" + timeClock);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeClock, broadcast);
+            NoticeBean mNoticeBean = new NoticeBean(null, timeClock, "未启动", false);
             NoticeManager.add(mNoticeBean);
-//            if (flag == 0) {
-//            } else {
-//                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time, intervalMillis, broadcast);
-//            }
         }
-
-
         T.shortToast(mContext, "设置成功");
     }
 

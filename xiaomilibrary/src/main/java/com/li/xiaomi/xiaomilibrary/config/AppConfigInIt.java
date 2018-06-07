@@ -3,8 +3,7 @@ package com.li.xiaomi.xiaomilibrary.config;
 import android.content.Context;
 
 import com.li.xiaomi.xiaomilibrary.utils.CheckStringEmptyUtils;
-import com.li.xiaomi.xiaomilibrary.utils.T;
-import com.li.xiaomi.xiaomilibrary.utils.greendaoUtils.DBManager;
+
 
 /**
  * 作者：dell or Xiaomi Li
@@ -36,18 +35,4 @@ public final class AppConfigInIt {
     public static Context getApplicationContext() {
         return getConfiguration(AppConfigType.APPLICATIO_CONTEXT);
     }
-
-    /**
-     * 初始化是数据库
-     */
-    public static void initDB() {
-        //如果数据库名称不是null，就去初始化数据库
-        String s = getConfiguration(AppConfigType.DBNAME);
-        if (!CheckStringEmptyUtils.IsEmpty(s)) {
-            //初始化数据库
-            DBManager.getInstance().init(getApplicationContext());
-        }
-    }
-
-
 }

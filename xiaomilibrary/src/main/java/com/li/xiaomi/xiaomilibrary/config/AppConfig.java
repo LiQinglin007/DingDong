@@ -1,10 +1,8 @@
 package com.li.xiaomi.xiaomilibrary.config;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.li.xiaomi.xiaomilibrary.utils.CheckStringEmptyUtils;
-import com.li.xiaomi.xiaomilibrary.utils.greendaoUtils.DBManager;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;

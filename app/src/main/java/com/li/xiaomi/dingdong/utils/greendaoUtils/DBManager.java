@@ -1,11 +1,11 @@
-package com.li.xiaomi.xiaomilibrary.utils.greendaoUtils;
+package com.li.xiaomi.dingdong.utils.greendaoUtils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 
-import com.li.xiaomi.xiaomilibrary.bean.DaoMaster;
-import com.li.xiaomi.xiaomilibrary.bean.DaoSession;
+import com.li.xiaomi.dingdong.db.DaoMaster;
+import com.li.xiaomi.dingdong.db.DaoSession;
 import com.li.xiaomi.xiaomilibrary.config.AppConfigInIt;
 import com.li.xiaomi.xiaomilibrary.config.AppConfigType;
 

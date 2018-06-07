@@ -1,4 +1,4 @@
-package com.li.xiaomi.xiaomilibrary.utils.greendaoUtils;
+package com.li.xiaomi.dingdong.utils.greendaoUtils;
 
 /**
  * @author 小东

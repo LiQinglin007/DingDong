@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.li.xiaomi.dingdong.R;
+import com.li.xiaomi.dingdong.utils.greendaoUtils.DBManager;
 import com.li.xiaomi.xiaomilibrary.config.AppConfigInIt;
 
 /**
@@ -21,6 +22,6 @@ public class MyApplication extends Application {
                 withBaseUrl("").
                 withDBGreenDao(getResources().getString(R.string.db_name)).
                 configure();
-        AppConfigInIt.initDB();
+        DBManager.getInstance().init(getApplicationContext());
     }
 }

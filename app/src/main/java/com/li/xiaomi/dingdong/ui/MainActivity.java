@@ -12,11 +12,12 @@ import android.view.MenuItem;
 
 import com.li.xiaomi.dingdong.R;
 import com.li.xiaomi.dingdong.adapter.NoticeAdapter;
+import com.li.xiaomi.dingdong.db.NoticeBean;
 import com.li.xiaomi.dingdong.db.NoticeManager;
 import com.li.xiaomi.dingdong.utils.FinalData;
 import com.li.xiaomi.xiaomilibrary.base.BaseActivity;
 import com.li.xiaomi.xiaomilibrary.base.BasePresenter;
-import com.li.xiaomi.xiaomilibrary.bean.NoticeBean;
+import com.li.xiaomi.xiaomilibrary.utils.LogUtils;
 import com.li.xiaomi.xiaomilibrary.utils.PreferenceUtils;
 import com.li.xiaomi.xiaomilibrary.utils.timer.BaseTimerTask;
 import com.li.xiaomi.xiaomilibrary.utils.timer.ITimerListener;
@@ -34,7 +35,7 @@ import java.util.Timer;
  */
 
 public class MainActivity extends BaseActivity implements ITimerListener {
-
+    private final String Tag = MainActivity.class.getSimpleName();
     private Timer mTimer = null;
     int mCount = 2;//倒计时时间
     RecyclerView mRecyclerView;
@@ -129,7 +130,7 @@ public class MainActivity extends BaseActivity implements ITimerListener {
     }
 
 
-    //判断是否显示滑动启动页
+    //判断是否要去设置页面
     private void checkIsShowScroll() {
         boolean aBoolean = PreferenceUtils.getBoolean(FinalData.IS_SETTING, false);
         if (!aBoolean) {
@@ -147,10 +148,12 @@ public class MainActivity extends BaseActivity implements ITimerListener {
                     cal.set(Calendar.MINUTE, PreferenceUtils.getInt(FinalData.WORK_MINE, 0));
                     cal.set(Calendar.SECOND, 0);
                     long timeInMillis = cal.getTimeInMillis();
+                    LogUtils.Loge(Tag, "今天上班时间：" + timeInMillis);
+                    LogUtils.Loge(Tag, "现在的时间：" + time);
 
-                    if (time > noticeBeans.get(0).getNoticeTitle() || time < timeInMillis) {//并且现在的时间已经超过了设定的时间，并且还没到上班时间
+                    if (time > noticeBeans.get(0).getClockTime() && time < timeInMillis) {//并且现在的时间已经超过了设定的时间，并且还没到上班时间
                         Intent intent = new Intent(MainActivity.this, ClockActivity.class);
-                        intent.putExtra("timeId", noticeBeans.get(0).getNoticeTitle());
+                        intent.putExtra("timeId", noticeBeans.get(0).getClockTime());
                         startActivity(intent);
                     }
                 }

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
@@ -17,8 +17,16 @@ android {
         }
     }
 }
+greendao {
+    schemaVersion 1   //数据库版本号
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':xiaomilibrary')
+    //数据库
+    api 'org.greenrobot:greendao:3.2.0'
+
+    // add library
+    api 'org.greenrobot:greendao-generator:3.2.0'
 }

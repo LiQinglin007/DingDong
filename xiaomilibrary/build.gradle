@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.greenrobot.greendao'
+
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -20,9 +20,6 @@ android {
         }
     }
 
-}
-greendao {
-    schemaVersion 1   //数据库版本号
 }
 
 dependencies {
@@ -51,11 +48,7 @@ dependencies {
     api 'com.github.bumptech.glide:glide:4.6.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 
-    //数据库
-    api 'org.greenrobot:greendao:3.2.0'
 
-    // add library
-    api 'org.greenrobot:greendao-generator:3.2.0'
 
     //json解析
     api 'com.google.code.gson:gson:2.8.2'

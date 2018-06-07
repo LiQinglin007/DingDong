@@ -1,8 +1,7 @@
 package com.li.xiaomi.dingdong.db;
 
-import com.li.xiaomi.xiaomilibrary.bean.NoticeBean;
-import com.li.xiaomi.xiaomilibrary.bean.NoticeBeanDao;
-import com.li.xiaomi.xiaomilibrary.utils.greendaoUtils.DBManager;
+
+import com.li.xiaomi.dingdong.utils.greendaoUtils.DBManager;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class NoticeManager {
 //        4. <= : le
         List<NoticeBean> noticeBeans = noticeBeanDao.
                 queryBuilder().
-                where(NoticeBeanDao.Properties.NoticeTitle.gt(timeInMillis)).//现在以后的
+                where(NoticeBeanDao.Properties.ClockTime.gt(timeInMillis)).//现在以后的
                 list();
 
         if (noticeBeans != null && noticeBeans.size() != 0) {
@@ -70,8 +69,8 @@ public class NoticeManager {
 //        4. <= : le
         List<NoticeBean> noticeBeans = noticeBeanDao.
                 queryBuilder().
-                where(NoticeBeanDao.Properties.NoticeTitle.le(timeInMillis)).//查询今天之前的(包含今天)
-                orderDesc(NoticeBeanDao.Properties.NoticeTitle).//倒序排列
+                where(NoticeBeanDao.Properties.ClockTime.le(timeInMillis)).//查询今天之前的(包含今天)
+                orderDesc(NoticeBeanDao.Properties.ClockTime).//倒序排列
                 list();
         ArrayList<NoticeBean> mList = new ArrayList<>();
         if (noticeBeans != null && noticeBeans.size() != 0) {
@@ -111,9 +110,9 @@ public class NoticeManager {
 //        4. <= : le
         List<NoticeBean> noticeBeans = noticeBeanDao.
                 queryBuilder().
-                where(NoticeBeanDao.Properties.NoticeTitle.le(timeInMillis)).//查询今天之前的(包含今天)
-                where(NoticeBeanDao.Properties.NoticeTitle.ge(timeInMillis1)).//查询今天之后的(包含今天)
-                orderDesc(NoticeBeanDao.Properties.NoticeTitle).//倒序排列
+                where(NoticeBeanDao.Properties.ClockTime.le(timeInMillis)).//查询今天之前的(包含今天)
+                where(NoticeBeanDao.Properties.ClockTime.ge(timeInMillis1)).//查询今天之后的(包含今天)
+                orderDesc(NoticeBeanDao.Properties.ClockTime).//倒序排列
                 list();
         ArrayList<NoticeBean> mList = new ArrayList<>();
         if (noticeBeans != null && noticeBeans.size() != 0) {
@@ -130,10 +129,10 @@ public class NoticeManager {
 
     public static void update(NoticeBean mBean, long time) {
         NoticeBeanDao noticeBeanDao = DBManager.getInstance().getDaoSession().getNoticeBeanDao();
-        NoticeBean load = noticeBeanDao.queryBuilder().where(NoticeBeanDao.Properties.NoticeTitle.eq(time)).unique();
+        NoticeBean load = noticeBeanDao.queryBuilder().where(NoticeBeanDao.Properties.ClockTime.eq(time)).unique();
         load.setResult(mBean.getResult());
         load.setNoticeContent(mBean.getNoticeContent());
-        load.setNoticeTitle(mBean.getNoticeTitle());
+        load.setClockTime(mBean.getClockTime());
         noticeBeanDao.update(load);
     }
 

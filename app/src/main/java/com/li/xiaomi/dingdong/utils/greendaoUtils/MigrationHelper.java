@@ -1,11 +1,11 @@
-package com.li.xiaomi.xiaomilibrary.utils.greendaoUtils;
+package com.li.xiaomi.dingdong.utils.greendaoUtils;
 
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 
 
-import com.li.xiaomi.xiaomilibrary.bean.DaoMaster;
+import com.li.xiaomi.dingdong.db.DaoMaster;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.database.Database;

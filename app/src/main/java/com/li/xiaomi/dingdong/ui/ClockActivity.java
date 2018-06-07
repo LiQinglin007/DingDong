@@ -14,24 +14,19 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.li.xiaomi.dingdong.R;
+import com.li.xiaomi.dingdong.db.NoticeBean;
 import com.li.xiaomi.dingdong.db.NoticeManager;
 import com.li.xiaomi.dingdong.utils.FinalData;
 
 import com.li.xiaomi.xiaomilibrary.base.BaseActivity;
 import com.li.xiaomi.xiaomilibrary.base.BasePresenter;
-import com.li.xiaomi.xiaomilibrary.bean.NoticeBean;
 import com.li.xiaomi.xiaomilibrary.utils.NetWorkUtils;
 import com.li.xiaomi.xiaomilibrary.utils.PreferenceUtils;
 import com.li.xiaomi.xiaomilibrary.utils.timer.BaseTimerTask;
 import com.li.xiaomi.xiaomilibrary.utils.timer.ITimerListener;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 
 /**
@@ -182,6 +177,7 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
                 Result = false;
             } catch (Exception e) {
                 Log.e(ClockActivity.class.getSimpleName(), "exception:" + e.toString());
+                mTextView.setText("打卡失败，出现异常了：" + e.toString());
             }
         } else {
             closeTimer();
@@ -242,6 +238,4 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
             mKeyguardLock.reenableKeyguard();
         }
     }
-
-
 }
