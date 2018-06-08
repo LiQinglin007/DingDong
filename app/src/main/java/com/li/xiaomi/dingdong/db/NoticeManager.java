@@ -27,6 +27,25 @@ public class NoticeManager {
     }
 
     /**
+     * 查询未打卡的
+     *
+     * @return
+     */
+    public static ArrayList<NoticeBean> LoadFalse() {
+        NoticeBeanDao noticeBeanDao = DBManager.getInstance().getDaoSession().getNoticeBeanDao();
+        List<NoticeBean> noticeBeans = noticeBeanDao.
+                queryBuilder().
+                where(NoticeBeanDao.Properties.Result.eq(false)).//查询未打卡的
+                orderAsc(NoticeBeanDao.Properties.ClockTime).//倒序排列
+                list();
+        ArrayList<NoticeBean> mList = new ArrayList<>();
+        if (noticeBeans != null && noticeBeans.size() != 0) {
+            mList.addAll(noticeBeans);
+        }
+        return mList;
+    }
+
+    /**
      * 删除现在以后的数据，重新设置闹钟
      */
     public static void delete() {

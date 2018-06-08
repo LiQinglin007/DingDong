@@ -7,12 +7,31 @@
     android:orientation="vertical"
     tools:context=".ui.ClockActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/default_color"
+        app:popupTheme="@style/toolbarMenuStyle"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title=""
+        app:titleTextColor="@color/color_white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="叮咚打卡"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/px_30" />
+
+    </android.support.v7.widget.Toolbar>
+
     <TextView
         android:id="@+id/result_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="钉钉打卡"
-        android:textSize="24dp" />
+        android:text="叮咚打卡"
+        android:textSize="@dimen/px_28" />
 
 </LinearLayout>

@@ -177,7 +177,6 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
                 Result = false;
             } catch (Exception e) {
                 Log.e(ClockActivity.class.getSimpleName(), "exception:" + e.toString());
-                mTextView.setText("打卡失败，出现异常了：" + e.toString());
             }
         } else {
             closeTimer();
@@ -238,4 +237,6 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
             mKeyguardLock.reenableKeyguard();
         }
     }
+
+
 }

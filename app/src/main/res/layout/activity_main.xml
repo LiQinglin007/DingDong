@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/main_toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/tablayout_appbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/default_color"
-        app:popupTheme="@style/toolbarMenuStyle"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title=""
-        app:titleTextColor="@color/color_white">
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/default_color"
+            app:popupTheme="@style/toolbarMenuStyle"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title=""
+            app:titleTextColor="@color/color_white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="打卡记录"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/px_30" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/main_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.design.widget.TabLayout>
+    </android.support.design.widget.AppBarLayout>
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="打卡记录"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/px_30" />
-
-
-    </android.support.v7.widget.Toolbar>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_recycler"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v7.widget.RecyclerView>
+    </android.support.v4.view.ViewPager>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

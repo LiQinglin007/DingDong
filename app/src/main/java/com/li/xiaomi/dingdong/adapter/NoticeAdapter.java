@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.li.xiaomi.dingdong.R;
 import com.li.xiaomi.dingdong.db.NoticeBean;
 import com.li.xiaomi.xiaomilibrary.utils.DateUtils;
+import com.li.xiaomi.xiaomilibrary.utils.LogUtils;
 
 
 /**
@@ -23,7 +24,10 @@ public class NoticeAdapter extends BaseQuickAdapter<NoticeBean, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, NoticeBean item) {
-        helper.setText(R.id.item_notice_time, DateUtils.LongToStr(item.getClockTime(), "yyyy-MM-dd HH:mm"));
+        LogUtils.Loge("getPosition:"+helper.getPosition());
+        LogUtils.Loge("getLayoutPosition:"+helper.getLayoutPosition());
+        LogUtils.Loge("getOldPosition:"+helper.getOldPosition());
+        helper.setText(R.id.item_notice_time, DateUtils.getMonthDayWeek(DateUtils.LogToDate(item.getClockTime())));
         helper.setText(R.id.item_notice_content, item.getNoticeContent());
     }
 }

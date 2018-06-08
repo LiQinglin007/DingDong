@@ -39,6 +39,16 @@ public class DateUtils {
     }
 
     /**
+     * 时间戳转换成时间
+     *
+     * @param timeStamp
+     * @return
+     */
+    public static Date LogToDate(long timeStamp) {
+        return new Date(Long.parseLong(String.valueOf(timeStamp)));
+    }
+
+    /**
      * 拿到指定的天
      *
      * @param year
@@ -422,6 +432,7 @@ public class DateUtils {
             return null;
         }
     }
+
     /**
      * 日期字符串转换为日期
      *
@@ -562,6 +573,7 @@ public class DateUtils {
 
     /**
      * 前一天
+     *
      * @param date
      * @return
      */
@@ -575,6 +587,7 @@ public class DateUtils {
 
     /**
      * 后一天
+     *
      * @param date
      * @return
      */
@@ -588,6 +601,7 @@ public class DateUtils {
 
     /**
      * 下下天
+     *
      * @param date
      * @return
      */
@@ -601,6 +615,7 @@ public class DateUtils {
 
     /**
      * 下下下天
+     *
      * @param date
      * @return
      */

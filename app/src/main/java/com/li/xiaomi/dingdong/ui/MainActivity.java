@@ -2,6 +2,9 @@ package com.li.xiaomi.dingdong.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +15,7 @@ import android.view.MenuItem;
 
 import com.li.xiaomi.dingdong.R;
 import com.li.xiaomi.dingdong.adapter.NoticeAdapter;
+import com.li.xiaomi.dingdong.adapter.ViewPagerAdapter;
 import com.li.xiaomi.dingdong.db.NoticeBean;
 import com.li.xiaomi.dingdong.db.NoticeManager;
 import com.li.xiaomi.dingdong.utils.FinalData;
@@ -34,13 +38,15 @@ import java.util.Timer;
  * 最后修改：
  */
 
-public class MainActivity extends BaseActivity implements ITimerListener {
-    private final String Tag = MainActivity.class.getSimpleName();
-    private Timer mTimer = null;
-    int mCount = 2;//倒计时时间
-    RecyclerView mRecyclerView;
-    NoticeAdapter mNoticeAdapter;
+public class MainActivity extends BaseActivity {
+
     Toolbar mToolbar;
+    TabLayout mTabLayout;
+    ViewPager mViewPager;
+
+    ViewPagerAdapter mViewPagerAdapter;
+    ArrayList<Fragment> mFragments = new ArrayList<>();
+    ArrayList<String> mTitle = new ArrayList<>();
 
     @Override
     protected Object setLayout() {
@@ -59,6 +65,13 @@ public class MainActivity extends BaseActivity implements ITimerListener {
 
     @Override
     protected void initData() {
+        mFragments.clear();
+        mFragments.add(LeftFragment.getInstance());
+        mFragments.add(RightFragment.getInstance());
+
+        mTitle.clear();
+        mTitle.add("打卡记录");
+        mTitle.add("预约打卡");
 
     }
 
@@ -71,19 +84,11 @@ public class MainActivity extends BaseActivity implements ITimerListener {
     @Override
     protected void initView(Bundle savedInstanceState) {
         mToolbar = findViewById(R.id.main_toolbar);
+        mTabLayout = findViewById(R.id.main_tablayout);
+        mViewPager = findViewById(R.id.main_viewpager);
+
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-
-        mRecyclerView = findViewById(R.id.main_recycler);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        mNoticeAdapter = new NoticeAdapter(R.layout.item_notice);
-        mRecyclerView.setAdapter(mNoticeAdapter);
-        getData();
-
-        mTimer = new Timer();
-        final BaseTimerTask baseTimerTask = new BaseTimerTask(this);
-        mTimer.schedule(baseTimerTask, 0, 1000);
 
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -93,71 +98,23 @@ public class MainActivity extends BaseActivity implements ITimerListener {
                         startActivity(new Intent(MainActivity.this, SettingActivity.class));
                         break;
                     case R.id.menu_main_test:
-                        startActivity(new Intent(MainActivity.this, ClockActivity.class));
+                        startActivity(new Intent(MainActivity.this, TestActivity.class));
                         break;
                 }
                 return true;
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getData();
-    }
-
-    private void getData() {
-        ArrayList<NoticeBean> noticeBeans = NoticeManager.LoadAllDay();
-        mNoticeAdapter.setNewData(noticeBeans);
-    }
-
-    @Override
-    public void onTimer() {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mCount--;
-                if (mCount <= 0) {
-                    if (mTimer != null) {
-                        mTimer.cancel();
-                        mTimer = null;
-                        checkIsShowScroll();
-                    }
-                }
-            }
-        });
-    }
 
 
-    //判断是否要去设置页面
-    private void checkIsShowScroll() {
-        boolean aBoolean = PreferenceUtils.getBoolean(FinalData.IS_SETTING, false);
-        if (!aBoolean) {
-            startActivity(new Intent(MainActivity.this, SettingActivity.class));
-        } else {
-            ArrayList<NoticeBean> noticeBeans = NoticeManager.LoadAllThisDay();
-            int size = noticeBeans.size();
-            if (size != 0) {
-                if (!noticeBeans.get(0).getResult()) {//如果今天的还没打卡，就去打卡页面
-                    long time = new Date().getTime();
-                    //今天0点
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(System.currentTimeMillis());
-                    cal.set(Calendar.HOUR_OF_DAY, PreferenceUtils.getInt(FinalData.WORK_HOUR, 0));
-                    cal.set(Calendar.MINUTE, PreferenceUtils.getInt(FinalData.WORK_MINE, 0));
-                    cal.set(Calendar.SECOND, 0);
-                    long timeInMillis = cal.getTimeInMillis();
-                    LogUtils.Loge(Tag, "今天上班时间：" + timeInMillis);
-                    LogUtils.Loge(Tag, "现在的时间：" + time);
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPagerAdapter.setList(mFragments, mTitle);
+        mViewPager.setAdapter(mViewPagerAdapter);
 
-                    if (time > noticeBeans.get(0).getClockTime() && time < timeInMillis) {//并且现在的时间已经超过了设定的时间，并且还没到上班时间
-                        Intent intent = new Intent(MainActivity.this, ClockActivity.class);
-                        intent.putExtra("timeId", noticeBeans.get(0).getClockTime());
-                        startActivity(intent);
-                    }
-                }
-            }
-        }
+        mTabLayout.setBackgroundColor(getResources().getColor(R.color.default_color));
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.warning_color5), getResources().getColor(R.color.color_white));
+        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.color_white));
+        mTabLayout.setSelectedTabIndicatorHeight(5);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 }
