@@ -24,9 +24,6 @@ public class NoticeAdapter extends BaseQuickAdapter<NoticeBean, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, NoticeBean item) {
-        LogUtils.Loge("getPosition:"+helper.getPosition());
-        LogUtils.Loge("getLayoutPosition:"+helper.getLayoutPosition());
-        LogUtils.Loge("getOldPosition:"+helper.getOldPosition());
         helper.setText(R.id.item_notice_time, DateUtils.getMonthDayWeek(DateUtils.LogToDate(item.getClockTime())));
         helper.setText(R.id.item_notice_content, item.getNoticeContent());
     }

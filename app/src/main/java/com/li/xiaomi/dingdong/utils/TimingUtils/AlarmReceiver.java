@@ -14,10 +14,6 @@ import com.li.xiaomi.dingdong.ui.ClockActivity;
  * Created by nomasp on 2015/10/07.
  */
 public class AlarmReceiver extends BroadcastReceiver {
-
-    public AlarmReceiver() {
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e("###", "闹钟执行了！");

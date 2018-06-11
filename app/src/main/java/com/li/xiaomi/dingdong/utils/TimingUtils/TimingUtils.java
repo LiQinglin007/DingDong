@@ -27,29 +27,15 @@ public class TimingUtils {
     @TargetApi(Build.VERSION_CODES.N)
     public static void setAlarmTime(Context context, Intent intent) {
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        LogUtils.Loge(Tag, "闹钟了闹钟了开启下次定时，时间(API>=19)：");
         int clockId = intent.getIntExtra("ClockId", 0);
         int week = intent.getIntExtra("week", 0);
         int HourClock = intent.getIntExtra("hourClock", 0);
         int MinClock = intent.getIntExtra("minClock", 0);
-        PendingIntent sender = PendingIntent.getBroadcast(context, clockId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        Calendar calendarClock = getInstance();
-        calendarClock.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        calendarClock.set(calendarClock.get(Calendar.YEAR), calendarClock.get(Calendar.MONTH), calendarClock.get
-                (Calendar.DAY_OF_MONTH), HourClock, MinClock, 0);
-        long clockTime = calMethod(week, calendarClock.getTimeInMillis());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            LogUtils.Loge(Tag, "开启下次定时，时间(API>=19)：" + clockTime);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, clockTime, sender);
-            NoticeBean mNoticeBean = new NoticeBean(null, clockTime, "未启动", false);
-            NoticeManager.add(mNoticeBean);
-        } else {
-            LogUtils.Loge(Tag, "开启下次定时，时间(API<19)：" + clockTime);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, clockTime, sender);
-            NoticeBean mNoticeBean = new NoticeBean(null, clockTime, "未启动", false);
-            NoticeManager.add(mNoticeBean);
-        }
+        cancelAlarm(context, clockId);
+        clockId = clockId + 7;
+        setClock(context, HourClock, MinClock, week, clockId);
     }
 
     /**
@@ -60,11 +46,10 @@ public class TimingUtils {
      * @param MinClock
      * @param week      周几   1-7（周一到周日）
      * @param ClockId   闹钟id
-     * @param msg       提示信息
      */
 
     @TargetApi(Build.VERSION_CODES.N)
-    public static void setClock(Context mContext, int HourClock, int MinClock, int week, int ClockId, String msg) {
+    public static void setClock(Context mContext, int HourClock, int MinClock, int week, int ClockId) {
         Calendar calendar = getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get

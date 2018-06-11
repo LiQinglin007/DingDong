@@ -211,18 +211,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 }
             }
             //下一个周一
-            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 1, 101, "");
+            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 1, 101);
             //下一个周二
-            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 2, 202, "");
+            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 2, 202);
             //下一个周三
-            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 3, 303, "");
+            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 3, 303);
             //下一个周四
-            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 4, 404, "");
+            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 4, 404);
             //下一个周五
-            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 5, 505, "");
+            TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 5, 505);
 
             if (restType) {//单休  //下一个周六
-                TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 6, 606, "");
+                TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 6, 606);
             }
 
             new MiDialog(SettingActivity.this, MiDialog.MessageType).
