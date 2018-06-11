@@ -68,6 +68,14 @@ public class NoticeManager {
     }
 
     /**
+     * 删除全部
+     */
+    public static void deleteAll() {
+        NoticeBeanDao noticeBeanDao = DBManager.getInstance().getDaoSession().getNoticeBeanDao();
+        noticeBeanDao.deleteAll();
+    }
+
+    /**
      * 查询今天和今天之前的
      *
      * @return

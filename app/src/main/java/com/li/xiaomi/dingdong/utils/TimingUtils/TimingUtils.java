@@ -70,12 +70,12 @@ public class TimingUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             LogUtils.Loge(Tag, "开启定时，时间(API>=19)：" + timeClock);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeClock, broadcast);
-            NoticeBean mNoticeBean = new NoticeBean(null, timeClock, "未启动", false);
+            NoticeBean mNoticeBean = new NoticeBean(null, timeClock, "未启动", false,ClockId);
             NoticeManager.add(mNoticeBean);
         } else {
             LogUtils.Loge(Tag, "开启定时，时间(API>=19)：" + timeClock);
             alarmManager.set(AlarmManager.RTC_WAKEUP, timeClock, broadcast);
-            NoticeBean mNoticeBean = new NoticeBean(null, timeClock, "未启动", false);
+            NoticeBean mNoticeBean = new NoticeBean(null, timeClock, "未启动", false,ClockId);
             NoticeManager.add(mNoticeBean);
         }
         T.shortToast(mContext, "设置成功");

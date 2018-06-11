@@ -10,6 +10,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.li.xiaomi.dingdong.R;
+import com.li.xiaomi.dingdong.db.NoticeBean;
 import com.li.xiaomi.dingdong.db.NoticeManager;
 import com.li.xiaomi.dingdong.utils.FinalData;
 import com.li.xiaomi.dingdong.utils.TimingUtils.TimingUtils;
@@ -200,16 +201,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             PreferenceUtils.setBoolean(FinalData.DOUBLE_REST, restType);//是否单休
             PreferenceUtils.setBoolean(FinalData.IS_SETTING, true);//是否设置好了
             if (IS_UPDATE_STARTTIME) {//如果修改了启动时间(就是闹钟时间)，这里去关闭之前的闹钟然后重新设置
-                NoticeManager.delete();//删除现在以后的打卡日志
-                TimingUtils.cancelAlarm(SettingActivity.this, 101);
-                TimingUtils.cancelAlarm(SettingActivity.this, 202);
-                TimingUtils.cancelAlarm(SettingActivity.this, 303);
-                TimingUtils.cancelAlarm(SettingActivity.this, 404);
-                TimingUtils.cancelAlarm(SettingActivity.this, 505);
-                if (restType) {//单休  //下一个周六
-                    TimingUtils.cancelAlarm(SettingActivity.this, 606);
+                ArrayList<NoticeBean> noticeBeans = NoticeManager.LoadFalse();
+                for (NoticeBean noticeBean : noticeBeans) {
+                    TimingUtils.cancelAlarm(SettingActivity.this, noticeBean.getClockId());
                 }
             }
+            NoticeManager.deleteAll();//先把之前的数据删掉
             //下一个周一
             TimingUtils.setClock(SettingActivity.this, startUpHour, startUpmin, 1, 101);
             //下一个周二

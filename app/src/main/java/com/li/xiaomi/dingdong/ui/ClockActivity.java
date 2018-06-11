@@ -169,7 +169,7 @@ public class ClockActivity extends BaseActivity implements ITimerListener {
                 Result = true;
                 startActivity(intent);
                 if (timeId != -1) {
-                    NoticeBean mNoticeBean = new NoticeBean(timeId, new Date().getTime(), "启动钉钉成功", true);
+                    NoticeBean mNoticeBean = new NoticeBean(timeId, new Date().getTime(), "启动钉钉成功", true, null);
                     NoticeManager.update(mNoticeBean, timeId);
                 }
                 mTextView.setText("打卡成功");

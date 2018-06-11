@@ -7,6 +7,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+
 /**
  * 作者：dell or Xiaomi Li
  * 时间： 2018/6/7
@@ -21,52 +22,50 @@ public class NoticeBean implements Parcelable {
     Long ClockTime;//打卡时间(时间戳)
     String NoticeContent;//打卡记录
     Boolean Result;//打卡记录
-
-    @Generated(hash = 1625146489)
-    public NoticeBean(Long NoticeId, Long ClockTime, String NoticeContent, Boolean Result) {
+    Integer ClockId;//闹钟id
+    @Generated(hash = 491049956)
+    public NoticeBean(Long NoticeId, Long ClockTime, String NoticeContent,
+            Boolean Result, Integer ClockId) {
         this.NoticeId = NoticeId;
         this.ClockTime = ClockTime;
         this.NoticeContent = NoticeContent;
         this.Result = Result;
+        this.ClockId = ClockId;
     }
-
-
     @Generated(hash = 303198189)
     public NoticeBean() {
     }
-
     public Long getNoticeId() {
         return this.NoticeId;
     }
-
     public void setNoticeId(Long NoticeId) {
         this.NoticeId = NoticeId;
     }
-
     public Long getClockTime() {
         return this.ClockTime;
     }
-
     public void setClockTime(Long ClockTime) {
         this.ClockTime = ClockTime;
     }
-
-
     public String getNoticeContent() {
         return this.NoticeContent;
     }
-
     public void setNoticeContent(String NoticeContent) {
         this.NoticeContent = NoticeContent;
     }
-
     public Boolean getResult() {
         return this.Result;
     }
-
     public void setResult(Boolean Result) {
         this.Result = Result;
     }
+    public Integer getClockId() {
+        return this.ClockId;
+    }
+    public void setClockId(Integer ClockId) {
+        this.ClockId = ClockId;
+    }
+
 
     @Override
     public int describeContents() {
@@ -79,6 +78,7 @@ public class NoticeBean implements Parcelable {
         dest.writeValue(this.ClockTime);
         dest.writeString(this.NoticeContent);
         dest.writeValue(this.Result);
+        dest.writeValue(this.ClockId);
     }
 
     protected NoticeBean(Parcel in) {
@@ -86,6 +86,7 @@ public class NoticeBean implements Parcelable {
         this.ClockTime = (Long) in.readValue(Long.class.getClassLoader());
         this.NoticeContent = in.readString();
         this.Result = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.ClockId = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<NoticeBean> CREATOR = new Parcelable.Creator<NoticeBean>() {
